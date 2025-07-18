@@ -16,7 +16,19 @@ import environ
 
 env = environ.Env(
     DEBUG=(bool, False),
-    SECRET_KEY=(str, '')
+    SECRET_KEY=(str, ''),
+    # Clickhouse
+    CLICKHOUSE_HOST=(str, 'localhost'),
+    CLICKHOUSE_PORT=(int, 9000),
+    CLICKHOUSE_USER=(str, 'default'),
+    CLICKHOUSE_PASSWORD=(str, 'default'),
+    CLICKHOUSE_DB=(str, 'default'),
+    # Postgres
+    PGUSER=(str, 'postgres'),
+    PGDATABASE=(str, 'postgres'),
+    POSTGRES_PASSWORD=(str, 'root'),
+    PG_HOST=(str, 'localhost'),
+    PG_PORT=(int, 5432),
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -72,9 +84,21 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('PGDATABASE'),
+        'USER': env('PGUSER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'HOST': env('PG_HOST'),
+        'PORT': env('PG_PORT'),
     }
+}
+
+CLICKHOUSE = {
+    'host': env('CLICKHOUSE_HOST'),
+    'port': env.int('CLICKHOUSE_PORT'),
+    'user': env('CLICKHOUSE_USER'),
+    'password': env('CLICKHOUSE_PASSWORD'),
+    'database': env('CLICKHOUSE_DB')
 }
 
 AUTH_PASSWORD_VALIDATORS = [
