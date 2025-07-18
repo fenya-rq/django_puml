@@ -17,6 +17,9 @@ import environ
 env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, ''),
+    DJANGO_SUPERUSER_USERNAME=(str, 'admin'),
+    DJANGO_SUPERUSER_EMAIL=(str, 'admin@example.com'),
+    DJANGO_SUPERUSER_PASSWORD=(str, 'root'),
     # Clickhouse
     CLICKHOUSE_HOST=(str, 'localhost'),
     CLICKHOUSE_PORT=(int, 9000),
@@ -53,9 +56,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'users',
     'plan',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -132,3 +143,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if DEBUG:
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
