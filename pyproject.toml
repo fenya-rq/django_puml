@@ -8,11 +8,21 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.12, <4"
 dependencies = [
+    "django (==5.2.4)",
+    "djangorestframework (==3.16.0)",
+    "django-environ (==0.12.0)",
+    "gunicorn (==23.0.0)",
+    "uvicorn (==0.35.0)",
+    "clickhouse-driver (==0.2.9)",
+    "psycopg2-binary (==2.9.10)"
 ]
 
 [tool.poetry]
 packages = [{include = "django_puml", from = "src"}]
 
+
+[tool.poetry.group.dev.dependencies]
+whitenoise = "6.9.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
