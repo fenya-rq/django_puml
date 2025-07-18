@@ -17,6 +17,9 @@ import environ
 env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, ''),
+    DJANGO_SUPERUSER_USERNAME=(str, 'admin'),
+    DJANGO_SUPERUSER_EMAIL=(str, 'admin@example.com'),
+    DJANGO_SUPERUSER_PASSWORD=(str, 'root'),
     # Clickhouse
     CLICKHOUSE_HOST=(str, 'localhost'),
     CLICKHOUSE_PORT=(int, 9000),
@@ -39,9 +42,17 @@ environ.Env.read_env(DJANGO_ENV_PATH)
 
 SECRET_KEY = env('SECRET_KEY')
 
+DJANGO_SUPERUSER_USERNAME = env('DJANGO_SUPERUSER_USERNAME')
+DJANGO_SUPERUSER_EMAIL = env('DJANGO_SUPERUSER_EMAIL')
+DJANGO_SUPERUSER_PASSWORD = env('DJANGO_SUPERUSER_PASSWORD')
+
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://backend:8080', 'http://127.0.0.1:8080']
+
+AUTH_USER_MODEL = 'users.User'
 
 # Application definition
 INSTALLED_APPS = [
@@ -51,7 +62,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'users',
+    'plan',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,3 +149,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if DEBUG:
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
