@@ -27,7 +27,6 @@ class WorkVolumeService:
         return False
 
     def create_or_update_work_volume(self):
-        print(self.data)
         return WorkVolume.objects.update_or_create(
             factory=self.factory,
             start=self.data['start'],
