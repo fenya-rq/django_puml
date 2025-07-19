@@ -1,3 +1,5 @@
+"""Manually creating groups for testing goals. Should be removed before production using."""
+
 from django.db import migrations
 
 
