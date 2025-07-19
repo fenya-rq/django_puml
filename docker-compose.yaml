@@ -30,6 +30,7 @@ services:
       - "9000:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
+      - ./infra/clickhouse/clickhouse_init:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://localhost:8123/ping"]
       interval: 10s

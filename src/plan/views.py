@@ -9,11 +9,6 @@ from .services import WorkVolumeService
 class WorkVolumeView(APIView):
 
     def post(self, request):
-
-        # print(request.data)
-        # print(request.user.username)
-        # print(request.user.groups.all())
-
         serializer = WorkVolumeSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(
